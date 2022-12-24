@@ -4,11 +4,12 @@ using namespace std;
 
 const int MAX_SIZE = 81;
 
-void bagCheck(char* bags, int bagNum)
+char bagCheck(char* bags, int bagNum)
 {
 	if (strlen(bags) % 2)
 	{
 		cout << "bag " << bagNum + 1 << ": error - odd number of letters\n";
+		return 0;
 	}
 	else
 	{
@@ -20,12 +21,29 @@ void bagCheck(char* bags, int bagNum)
 				if (bags[i] == bags[j])
 				{
 					cout << "bag " << bagNum + 1 << ": " << bags[i] << endl;
-					return;
+					return bags[i];
 				}
 			}
 		}
 		cout << "bag " << bagNum + 1 << ": error - repeating present not found\n";
+		return 0;
 	}
+}
+
+int bagsPriority(char* bagsErrors, char* priority)
+{
+	int overallPriority = 0;
+	for (int bag = 0; bag < strlen(bagsErrors); bag++)
+	{
+		for (int pos = 0; pos < strlen(priority); pos++)
+		{
+			if (bagsErrors[bag] == priority[pos])
+			{
+				overallPriority += (pos + 1);
+			}
+		}
+	}
+	return overallPriority;
 }
 
 int main()
@@ -57,10 +75,24 @@ CrZsJsPPZsGzwwsLwLmpwMDw
 	{
 		cin.getline(bags[i], MAX_SIZE);
 	}
+
+	//create errorsList
+	char* errorsList = new char[bagsCount + 1];
+	//
+
 	for (int i = 0; i < bagsCount; i++)
 	{
-		bagCheck(bags[i], i);
+		errorsList[i] = bagCheck(bags[i], i);
 	}
+	errorsList[bagsCount] = '\0';
+
+	char samplePriorityList[] = "abcdefghijklmnopkrstuvwxyzABCDEFGHIJKLMNOPKRSTUVWXYZ";
+	cout << bagsPriority(errorsList, samplePriorityList);
+
+	//delete errorsList
+	delete[] errorsList;
+	errorsList = nullptr;
+	//
 
 	//delete bags
 	for (int i = 0; i < bagsCount; i++)
