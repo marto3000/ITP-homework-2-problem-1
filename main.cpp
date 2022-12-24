@@ -46,6 +46,33 @@ int bagsPriority(char* bagsErrors, char* priority)
 	return overallPriority;
 }
 
+bool findLetter(char letter, char* word)
+{
+	for (int i = 0; i < strlen(word); i++)
+	{
+		if (word[i] == letter)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void findGroupsID(char** bags, int bagsCount)
+{
+	for (int groups = 0; groups < bagsCount; groups = groups + 3)
+	{
+		for (int i = 0; i < strlen(bags[groups]); i++)
+		{
+			if (findLetter(bags[groups][i], bags[groups + 1]) && findLetter(bags[groups][i], bags[groups + 2]))
+			{
+				cout << bags[groups][i] << endl;
+				break;
+			}
+		}
+	}
+}
+
 int main()
 {
 	int bagsCount;
@@ -87,7 +114,8 @@ CrZsJsPPZsGzwwsLwLmpwMDw
 	errorsList[bagsCount] = '\0';
 
 	char samplePriorityList[] = "abcdefghijklmnopkrstuvwxyzABCDEFGHIJKLMNOPKRSTUVWXYZ";
-	cout << bagsPriority(errorsList, samplePriorityList);
+	cout << bagsPriority(errorsList, samplePriorityList) << endl;
+	findGroupsID(bags, bagsCount);
 
 	//delete errorsList
 	delete[] errorsList;
